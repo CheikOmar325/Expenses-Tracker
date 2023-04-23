@@ -1,0 +1,14 @@
+.App {
+  font-family: 'Arial', sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+h1 {
+  color: #222;
+  margin-bottom: 20px;
+}

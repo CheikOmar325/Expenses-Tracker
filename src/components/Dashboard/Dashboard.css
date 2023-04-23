@@ -1,0 +1,13 @@
+.dashboard {
+    margin-bottom: 20px;
+  }
+  
+  .total-expenses {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  

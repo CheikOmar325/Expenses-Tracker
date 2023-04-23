@@ -1,0 +1,21 @@
+.expense-list {
+    margin-bottom: 20px;
+  }
+  
+  .expense-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .expense-date,
+  .expense-title,
+  .expense-amount {
+    display: inline-block;
+    margin: 0;
+  }
+  
