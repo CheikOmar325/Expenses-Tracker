@@ -1,24 +1,29 @@
 import React, { useState, useContext } from 'react';
 import './ExpenseForm.css';
 import { ExpensesContext } from '../../context/ExpensesContext';
+import { DateTime } from 'luxon'; // Import DateTime from Luxon
 
 const ExpenseForm = () => {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
+  // Initialize categories and set the initial category state to the first category
+  const categories = ['Groceries', 'Subscriptions', 'Bills', 'Entertainment', 'Transportation', 'Other'];
+  const [category, setCategory] = useState(categories[0]);
   const { addExpense } = useContext(ExpensesContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Validate input values
-    if (!title || !amount || !date) return;
+    if (!title || !amount || !date || !category) return;
 
     const newExpense = {
       id: new Date().getTime(),
       title,
       amount: parseFloat(amount),
-      date: new Date(date),
+      date: DateTime.fromISO(date).toJSDate(), // Create a JavaScript Date object from the ISO date string
+      category,
     };
 
     // Add new expense to the list using context dispatch
@@ -28,8 +33,10 @@ const ExpenseForm = () => {
     setTitle('');
     setAmount('');
     setDate('');
+    setCategory(categories[0]);
   };
 
+  // Render the form
   return (
     <form className="expense-form" onSubmit={handleSubmit}>
       <input
@@ -50,6 +57,14 @@ const ExpenseForm = () => {
         value={date}
         onChange={(e) => setDate(e.target.value)}
       />
+      {/* Render the select element for categories */}
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
       <button type="submit">Add Expense</button>
     </form>
   );
