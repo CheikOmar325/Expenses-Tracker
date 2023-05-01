@@ -1,14 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import './ExpenseList.css';
 import { ExpensesContext } from '../../context/ExpensesContext';
 import { ReactTabulator } from 'react-tabulator';
 import 'react-tabulator/lib/styles.css';
 import 'react-tabulator/lib/css/tabulator.min.css';
-import { DateTime } from 'luxon';
-window.DateTime = DateTime;
 
 const ExpenseList = () => {
   const { expenses } = useContext(ExpensesContext);
+
+  const totalAmount = useMemo(() => {
+    return expenses.reduce((total, expense) => total + expense.amount, 0);
+  }, [expenses]);
+
+  const footer = (
+    <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '1rem' }}>
+      Total: ${totalAmount.toFixed(2)}
+    </div>
+  );
+
+  // Custom sorter function for dates
+  const dateSorter = (a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateA - dateB;
+  };
 
   const columns = [
     { title: 'Title', field: 'title', width: 200 },
@@ -16,13 +31,32 @@ const ExpenseList = () => {
     {
       title: 'Date',
       field: 'date',
-      sorter: 'date',
-      sorterParams: { format: 'YYYY-MM-DD' }, // Set the date format for sorting
+      width: 250, // Updated width for the date column
+      sorter: dateSorter,
       formatter: (cell) => {
-        return DateTime.fromISO(cell.getValue()).toLocaleString(); // Convert date string to local date string
+        const date = new Date(cell.getValue());
+        const timezoneOffset = date.getTimezoneOffset() * 60 * 1000;
+        const localDate = new Date(date.getTime() + timezoneOffset);
+        return localDate.toLocaleDateString();
       },
     },
     { title: 'Category', field: 'category', width: 200 },
+    {
+      title: 'Image',
+      field: 'image',
+      width: 200,
+      formatter: 'html',
+      formatterParams: {
+        target: '_blank',
+      },
+      formatter: (cell) => {
+        if (cell.getValue()) {
+          return `<img src="${cell.getValue()}" alt="Expense image" style="width: 50px; height: auto;" />`;
+        } else {
+          return '';
+        }
+      },
+    },
   ];
 
   return (
@@ -31,10 +65,7 @@ const ExpenseList = () => {
       <ReactTabulator
         data={expenses}
         columns={columns}
-        initialSort={[
-          // Add initialSort property to sort expenses by date in descending order
-          { column: 'date', dir: 'desc' },
-        ]}
+        footerElement={footer}
       />
     </div>
   );

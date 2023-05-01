@@ -1,70 +1,71 @@
 import React, { useState, useContext } from 'react';
-import './ExpenseForm.css';
 import { ExpensesContext } from '../../context/ExpensesContext';
-import { DateTime } from 'luxon'; // Import DateTime from Luxon
+import { DateTime } from 'luxon';
 
 const ExpenseForm = () => {
+  const { addExpense } = useContext(ExpensesContext);
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
+  const [category, setCategory] = useState('');
   const [date, setDate] = useState('');
-  // Initialize categories and set the initial category state to the first category
-  const categories = ['Groceries', 'Subscriptions', 'Bills', 'Entertainment', 'Transportation', 'Other'];
-  const [category, setCategory] = useState(categories[0]);
-  const { addExpense } = useContext(ExpensesContext);
+  const [image, setImage] = useState(null);
 
-  const handleSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-
-    // Validate input values
-    if (!title || !amount || !date || !category) return;
-
-    const newExpense = {
+    const expense = {
       id: new Date().getTime(),
       title,
       amount: parseFloat(amount),
-      date: DateTime.fromISO(date).toJSDate(), // Create a JavaScript Date object from the ISO date string
       category,
+      date: DateTime.fromISO(date).toJSDate(),
+      image,
     };
-
-    // Add new expense to the list using context dispatch
-    addExpense(newExpense);
-
-    // Reset the form
+    addExpense(expense);
     setTitle('');
     setAmount('');
+    setCategory('');
     setDate('');
-    setCategory(categories[0]);
+    setImage(null);
   };
 
-  // Render the form
+  const onImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
   return (
-    <form className="expense-form" onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <input
         type="text"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
       <input
         type="number"
-        step="0.01"
         placeholder="Amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
+        required
       />
       <input
         type="date"
         value={date}
         onChange={(e) => setDate(e.target.value)}
+        required
       />
-      {/* Render the select element for categories */}
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        {categories.map((category) => (
-          <option key={category} value={category}>
-            {category}
-          </option>
-        ))}
+      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+        <option value="">Select category</option>
+        <option value="Groceries">Groceries</option>
+        <option value="Subscriptions">Subscriptions</option>
+        <option value="Bills">Bills</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Transportation">Transportation</option>
+        <option value="Other">Other</option>
       </select>
+      <input type="file" accept="image/*" onChange={onImageChange} />
       <button type="submit">Add Expense</button>
     </form>
   );
