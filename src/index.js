@@ -3,7 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'tabulator-tables/dist/css/tabulator.min.css';
+import 'react-tabulator/lib/styles.css';
 
+// Workaround to suppress ResizeObserver loop limit exceeded error
+const resizeObserverLoopErrRe = /^ResizeObserver loop limit exceeded/;
+const originalConsoleError = console.error;
+console.error = function (msg, ...args) {
+  // Ignore ResizeObserver loop limit exceeded error
+  if (typeof msg === 'string' && resizeObserverLoopErrRe.test(msg)) {
+    return;
+  }
+  // Log all other errors
+  originalConsoleError.call(this, msg, ...args);
+};
+// End of workaround
+
+// Render the root React component
 ReactDOM.render(
   <React.StrictMode>
     <App />

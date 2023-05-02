@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { ExpensesContext } from '../../context/ExpensesContext';
 import { DateTime } from 'luxon';
 
+// ExpenseForm component for adding a new expense
 const ExpenseForm = () => {
   const { addExpense } = useContext(ExpensesContext);
   const [title, setTitle] = useState('');
@@ -10,6 +11,7 @@ const ExpenseForm = () => {
   const [date, setDate] = useState('');
   const [image, setImage] = useState(null);
 
+  // Function to handle form submission
   const onSubmit = (e) => {
     e.preventDefault();
     const expense = {
@@ -28,12 +30,14 @@ const ExpenseForm = () => {
     setImage(null);
   };
 
+  // Function to handle image change
   const onImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setImage(URL.createObjectURL(e.target.files[0]));
     }
   };
 
+  // Render the form
   return (
     <form onSubmit={onSubmit}>
       <input
