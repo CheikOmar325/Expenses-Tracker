@@ -1,4 +1,4 @@
-/*This file handles the server conection of the app.*/
+/*This file handles the server connection of the app.*/
 const express = require("express");
 const mongoose = require("mongoose");
 const expensesRouter = require("./routes/expensesRouter");

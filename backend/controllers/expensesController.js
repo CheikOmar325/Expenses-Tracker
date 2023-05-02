@@ -1,5 +1,6 @@
 const Expense = require("../models/expenseModel");
 
+// Function to get all expenses
 const getAllExpenses = async (req, res) => {
   try {
     const expenses = await Expense.find();
@@ -9,6 +10,7 @@ const getAllExpenses = async (req, res) => {
   }
 };
 
+// Function to create a new expense
 const createExpense = async (req, res) => {
   const newExpense = new Expense(req.body);
 
@@ -20,6 +22,7 @@ const createExpense = async (req, res) => {
   }
 };
 
+// Function to get a specific expense by its ID
 const getExpenseById = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
@@ -33,6 +36,7 @@ const getExpenseById = async (req, res) => {
   }
 };
 
+// Function to update a specific expense by its ID
 const updateExpense = async (req, res) => {
   try {
     const updatedExpense = await Expense.findByIdAndUpdate(
@@ -50,6 +54,7 @@ const updateExpense = async (req, res) => {
   }
 };
 
+// Function to delete a specific expense by its ID
 const deleteExpense = async (req, res) => {
   try {
     const deletedExpense = await Expense.findByIdAndRemove(req.params.id);
@@ -63,6 +68,7 @@ const deleteExpense = async (req, res) => {
   }
 };
 
+// Export the controller functions
 module.exports = {
   getAllExpenses,
   createExpense,
