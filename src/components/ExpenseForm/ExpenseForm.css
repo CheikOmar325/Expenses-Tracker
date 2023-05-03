@@ -1,14 +1,36 @@
 .expense-form {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   margin-bottom: 20px;
+}
+
+.expense-form h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
 }
 
 .expense-form input,
 .expense-form select,
 .expense-form button {
   padding: 5px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.expense-form input[type='file'] {
+  margin-bottom: 16px;
+}
+
+.expense-form select {
+  appearance: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .expense-form button {
@@ -17,6 +39,7 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  margin-top: 8px;
 }
 
 .expense-form button:hover {
